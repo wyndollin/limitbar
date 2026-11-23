@@ -390,17 +390,19 @@ private struct VendorSection: View {
     let vendor: Vendor
     let snap: Snapshot?
     let busy: Bool
+    @State private var hover = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .top, spacing: 8) {
-                VendorMark(vendor: vendor).frame(width: 18, height: 18)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(vendor.name).font(.system(size: 13, weight: .semibold)).tracking(-0.2)
-                    Text(planLine).font(.system(size: 11)).foregroundStyle(.secondary)
-                }
-                Spacer(minLength: 8)
-                Text(ageText).font(.system(size: 11)).foregroundStyle(.tertiary).padding(.top, 1)
+            if vendor == .claude {
+                // Fork addition: the Claude header opens Claude Code in Terminal (see Launch.swift).
+                Button { Launch.claudeCode() } label: { header }
+                    .buttonStyle(.plain)
+                    .onHover { hover = $0 }
+                    .help(Launch.skipsPermissions ? "Open Claude Code in Terminal (skipping permission prompts)"
+                                                  : "Open Claude Code in Terminal")
+            } else {
+                header
             }
             let windows = snap?.windows ?? []
             ForEach(Array(windows.enumerated()), id: \.offset) { i, w in
@@ -423,6 +425,25 @@ private struct VendorSection: View {
             }
         }
         .padding(EdgeInsets(top: 8, leading: 12, bottom: 9, trailing: 12))
+    }
+
+    private var header: some View {
+        HStack(alignment: .top, spacing: 8) {
+            VendorMark(vendor: vendor).frame(width: 18, height: 18)
+            VStack(alignment: .leading, spacing: 1) {
+                HStack(spacing: 4) {
+                    Text(vendor.name).font(.system(size: 13, weight: .semibold)).tracking(-0.2)
+                    if vendor == .claude && hover {
+                        Image(systemName: "arrow.up.forward.app").font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Text(planLine).font(.system(size: 11)).foregroundStyle(.secondary)
+            }
+            Spacer(minLength: 8)
+            Text(ageText).font(.system(size: 11)).foregroundStyle(.tertiary).padding(.top, 1)
+        }
+        .contentShape(Rectangle())
     }
 
     private var planLine: String {

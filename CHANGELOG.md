@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1
+
+This fork's first release (wyndollin/limitbar, a fork of dancik/limitbar). Everything from 1.1.0, plus:
+
+- **Open Claude Code from the panel.** Click the Claude section to open Claude Code in Terminal, in
+  your home folder. Only that click starts it. `defaults write io.github.dancik.limitbar
+  claudeSkipPermissions -bool true` adds `--dangerously-skip-permissions` (Claude Code then runs
+  commands without asking); it is off by default.
+
 ## 1.1.0
 
 - **Usage view.** A **Limits | Usage** switch at the top of the panel. Usage shows, per service, the
