@@ -1,4 +1,13 @@
-# LimitBar
+# LimitBar (fork)
+
+> **This is a fork of [dancik/limitbar](https://github.com/dancik/limitbar)**, by dancik, MIT licensed.
+> It adds one thing: **click Claude in the panel to open Claude Code in Terminal**, in your home folder.
+> `defaults write io.github.dancik.limitbar claudeSkipPermissions -bool true` makes it start with
+> `--dangerously-skip-permissions` (Claude Code then runs commands without asking first); that is off by
+> default. Everything else is LimitBar 1.1.0 as dancik wrote it. This fork's 1.1.1 was built on a Mac
+> with `scripts/build-app.sh --universal` (GitHub Actions did not run here), so it has no build-provenance
+> attestation: the installer checks the SHA-256 pinned in it, nothing more. See every change: [dancik/limitbar compared with this fork](https://github.com/dancik/limitbar/compare/main...wyndollin:limitbar:main).
+> Page: [marcdebatlle.com/bars](https://marcdebatlle.com/bars).
 
 **How much of your AI coding limits you've used — in the macOS menu bar.** One glance for Claude Code,
 Codex, Gemini (Google Antigravity) and Grok Build; hover for the 5-hour and weekly windows and when
@@ -18,16 +27,16 @@ they reset.
 
 Paste this into your AI agent (Claude Code, Codex, Gemini, Grok…):
 
-> Install LimitBar by following https://github.com/dancik/limitbar/blob/main/INSTALL.md
+> Install LimitBar by following https://github.com/wyndollin/limitbar/blob/main/INSTALL.md
 
 Or run it yourself in Terminal:
 
 ```bash
-d="$(mktemp -d)" && curl -fsSLo "$d/install.sh" https://raw.githubusercontent.com/dancik/limitbar/7105981982e652368b15e01b777164c999e213dd/install.sh && bash "$d/install.sh"
+d="$(mktemp -d)" && curl -fsSLo "$d/install.sh" https://raw.githubusercontent.com/wyndollin/limitbar/4411ac55c712f06cf106cbbc16955d1ad6eb8653/install.sh && bash "$d/install.sh"
 ```
 
 The link is pinned to one commit, so the script you run is exactly the one you can read
-[here](https://github.com/dancik/limitbar/blob/7105981982e652368b15e01b777164c999e213dd/install.sh). It downloads the release
+[here](https://github.com/wyndollin/limitbar/blob/4411ac55c712f06cf106cbbc16955d1ad6eb8653/install.sh). It downloads the release
 build, checks its SHA-256 against the digest written into that script, checks GitHub's build provenance
 when the [GitHub CLI](https://cli.github.com) is installed and signed in, and copies `LimitBar.app` to
 `/Applications`, where Spotlight and Launchpad find it. Any admin account can write there without a
@@ -172,7 +181,7 @@ Found a problem? See [SECURITY.md](SECURITY.md).
 ## Uninstall
 
 ```bash
-d="$(mktemp -d)" && curl -fsSLo "$d/install.sh" https://raw.githubusercontent.com/dancik/limitbar/7105981982e652368b15e01b777164c999e213dd/install.sh && bash "$d/install.sh" --uninstall
+d="$(mktemp -d)" && curl -fsSLo "$d/install.sh" https://raw.githubusercontent.com/wyndollin/limitbar/4411ac55c712f06cf106cbbc16955d1ad6eb8653/install.sh && bash "$d/install.sh" --uninstall
 ```
 
 or quit LimitBar from its panel and delete `LimitBar` from Applications, `~/Applications/LimitBar.app`
