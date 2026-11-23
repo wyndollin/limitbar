@@ -11,12 +11,16 @@
 # Gatekeeper/quarantine overrides, no telemetry, no installing or signing in to any AI CLI.
 set -euo pipefail
 
-REPO="dancik/limitbar"
-VERSION="1.1.0"
+REPO="wyndollin/limitbar"   # a fork of dancik/limitbar
+VERSION="1.1.1"
 # Pinned by this commit of install.sh: the release zip must match it byte for byte, and the source build
 # must check out exactly this commit.
-ZIP_SHA256="2261c588c6a16ab5d538f0b8109262b404e6a81cb4bc1f1e310d13ee292b0999"
-SOURCE_COMMIT="64cfc8682f2d04addb560a044ddf649205a9f322"
+ZIP_SHA256="fcccebed50dedc6456e70b14e9ff8df0740fdfa1a8a89d2bdcf71eee92ce6967"
+SOURCE_COMMIT="81cec2c21cf939b6c1488bade5d0417db5b54939"
+# 1 when the pinned release was built by .github/workflows/release.yml and carries a provenance attestation.
+# 1.1.1 was built on a Mac with scripts/build-app.sh --universal (Actions were unavailable on this fork),
+# so it has none: the SHA-256 pin above is the check.
+ATTESTED=0
 
 BUNDLE_ID="io.github.dancik.limitbar"
 # /Applications when this account may write there — every admin account can, without a password, the
@@ -105,7 +109,9 @@ else
   say "SHA-256 verified"
   # Checked whenever the GitHub CLI can do it (installed and signed in); the pinned SHA-256 above is
   # always checked and is what guarantees these are the published bytes.
-  if command -v gh >/dev/null 2>&1 && gh auth status --hostname github.com >/dev/null 2>&1; then
+  if [[ "$ATTESTED" != 1 ]]; then
+    echo "(This release was built outside GitHub Actions, so there is no build provenance to check; the pinned SHA-256 above was.)"
+  elif command -v gh >/dev/null 2>&1 && gh auth status --hostname github.com >/dev/null 2>&1; then
     gh attestation verify "$STAGE/LimitBar.zip" --repo "$REPO" \
       --signer-workflow "$REPO/.github/workflows/release.yml" --deny-self-hosted-runners >/dev/null \
       || die "build provenance check failed — not installing"
